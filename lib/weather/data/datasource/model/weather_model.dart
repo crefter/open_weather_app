@@ -15,6 +15,14 @@ class WeatherModel {
     _clouds = clouds;
   }
 
+  WeatherModel.empty() {
+    _weather?.add(WeatherInner(main: 'None', description: '', icon: null));
+    _clouds = Clouds(all: 0);
+    _rain = Rain(h: 0);
+    _wind = Wind(speed: 0, deg: 0);
+    _main = Main(temp: 0, feelsLike: 0, tempMin: 0, tempMax: 0, humidity: 0);
+  }
+
   WeatherModel.fromJson(Map<String, dynamic> json) {
     if (json['weather'] != null) {
       _weather = [];

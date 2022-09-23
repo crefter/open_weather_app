@@ -13,10 +13,13 @@ class LocalWeatherDataSourceImpl implements LocalWeatherDataSource {
 
   @override
   Future<WeatherModel> getWeather() async {
-    String json =
-        sharedPreferences.getString(_weatherKey) ?? '{"main" : {"temp":0.0}}';
-    Map<String, dynamic> map = jsonDecode(json);
-    return WeatherModel.fromJson(map);
+    if (sharedPreferences.getString(_weatherKey) == null) {
+      return WeatherModel.empty();
+    } else {
+      String json = sharedPreferences.getString(_weatherKey) ?? '';
+      Map<String, dynamic> map = jsonDecode(json);
+      return WeatherModel.fromJson(map);
+    }
   }
 
   @override
