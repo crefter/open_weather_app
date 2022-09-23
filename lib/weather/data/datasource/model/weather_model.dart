@@ -2,14 +2,12 @@ class WeatherModel {
   WeatherModel({
     List<WeatherInner>? weather,
     Main? main,
-    num? visibility,
     Wind? wind,
     Rain? rain,
     Clouds? clouds,
   }) {
     _weather = weather;
     _main = main;
-    _visibility = visibility;
     _wind = wind;
     _rain = rain;
     _clouds = clouds;
@@ -23,7 +21,6 @@ class WeatherModel {
       });
     }
     _main = json['main'] != null ? Main.fromJson(json['main']) : null;
-    _visibility = json['visibility'];
     _wind = json['wind'] != null ? Wind.fromJson(json['wind']) : null;
     _rain = json['rain'] != null ? Rain.fromJson(json['rain']) : null;
     _clouds = json['clouds'] != null ? Clouds.fromJson(json['clouds']) : null;
@@ -31,7 +28,6 @@ class WeatherModel {
 
   List<WeatherInner>? _weather;
   Main? _main;
-  num? _visibility;
   Wind? _wind;
   Rain? _rain;
   Clouds? _clouds;
@@ -39,7 +35,6 @@ class WeatherModel {
   WeatherModel copyWith({
     List<WeatherInner>? weather,
     Main? main,
-    num? visibility,
     Wind? wind,
     Rain? rain,
     Clouds? clouds,
@@ -47,7 +42,6 @@ class WeatherModel {
       WeatherModel(
         weather: weather ?? _weather,
         main: main ?? _main,
-        visibility: visibility ?? _visibility,
         wind: wind ?? _wind,
         rain: rain ?? _rain,
         clouds: clouds ?? _clouds,
@@ -56,8 +50,6 @@ class WeatherModel {
   List<WeatherInner>? get weather => _weather;
 
   Main? get main => _main;
-
-  num? get visibility => _visibility;
 
   Wind? get wind => _wind;
 
@@ -73,7 +65,6 @@ class WeatherModel {
     if (_main != null) {
       map['main'] = _main?.toJson();
     }
-    map['visibility'] = _visibility;
     if (_wind != null) {
       map['wind'] = _wind?.toJson();
     }
@@ -85,6 +76,25 @@ class WeatherModel {
     }
     return map;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WeatherModel &&
+          runtimeType == other.runtimeType &&
+          _weather == other._weather &&
+          _main == other._main &&
+          _wind == other._wind &&
+          _rain == other._rain &&
+          _clouds == other._clouds;
+
+  @override
+  int get hashCode =>
+      _weather.hashCode ^
+      _main.hashCode ^
+      _wind.hashCode ^
+      _rain.hashCode ^
+      _clouds.hashCode;
 }
 
 /// all : 100
@@ -116,6 +126,14 @@ class Clouds {
     map['all'] = _all;
     return map;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Clouds && runtimeType == other.runtimeType && _all == other._all;
+
+  @override
+  int get hashCode => _all.hashCode;
 }
 
 /// 1h : 3.16
@@ -147,6 +165,14 @@ class Rain {
     map['1h'] = _h;
     return map;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Rain && runtimeType == other.runtimeType && _h == other._h;
+
+  @override
+  int get hashCode => _h.hashCode;
 }
 
 /// speed : 0.62
@@ -198,6 +224,18 @@ class Wind {
     map['gust'] = _gust;
     return map;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Wind &&
+          runtimeType == other.runtimeType &&
+          _speed == other._speed &&
+          _deg == other._deg &&
+          _gust == other._gust;
+
+  @override
+  int get hashCode => _speed.hashCode ^ _deg.hashCode ^ _gust.hashCode;
 }
 
 /// temp : 298.48
@@ -269,6 +307,25 @@ class Main {
     map['humidity'] = _humidity;
     return map;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Main &&
+          runtimeType == other.runtimeType &&
+          _temp == other._temp &&
+          _feelsLike == other._feelsLike &&
+          _tempMin == other._tempMin &&
+          _tempMax == other._tempMax &&
+          _humidity == other._humidity;
+
+  @override
+  int get hashCode =>
+      _temp.hashCode ^
+      _feelsLike.hashCode ^
+      _tempMin.hashCode ^
+      _tempMax.hashCode ^
+      _humidity.hashCode;
 }
 
 /// id : 501
@@ -330,4 +387,18 @@ class WeatherInner {
     map['icon'] = _icon;
     return map;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WeatherInner &&
+          runtimeType == other.runtimeType &&
+          _id == other._id &&
+          _main == other._main &&
+          _description == other._description &&
+          _icon == other._icon;
+
+  @override
+  int get hashCode =>
+      _id.hashCode ^ _main.hashCode ^ _description.hashCode ^ _icon.hashCode;
 }
