@@ -66,7 +66,7 @@ void main() {
       expect(
         actual,
         isA<WeatherModel>()
-            .having((p) => p.weather?.first.id, 'weather_id', 501)
+            .having((p) => p.weather?.first.main, 'main', 'Rain')
             .having((p) => p.rain?.h, 'rain_h', 3.16),
       );
     });

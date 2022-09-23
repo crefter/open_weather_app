@@ -10,7 +10,7 @@ class Weather {
   final String weatherName;
   final String weatherDescription;
   final String icon;
-  final String clouds;
+  final double clouds;
 
   Weather({
     required this.temperature,

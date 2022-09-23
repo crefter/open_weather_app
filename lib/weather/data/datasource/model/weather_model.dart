@@ -1,3 +1,5 @@
+import 'package:open_weather_app/weather/domain/entity/weather.dart';
+
 class WeatherModel {
   WeatherModel({
     List<WeatherInner>? weather,
@@ -75,6 +77,41 @@ class WeatherModel {
       map['clouds'] = _clouds?.toJson();
     }
     return map;
+  }
+
+  WeatherModel.fromWeather(Weather weather) {
+    _weather?.add(
+      WeatherInner(
+          main: weather.weatherName,
+          description: weather.weatherDescription,
+          icon: weather.icon),
+    );
+    _clouds = Clouds(all: weather.clouds);
+    _main = Main(
+      temp: weather.temperature,
+      tempMax: weather.maxTemperature,
+      tempMin: weather.minTemperature,
+    );
+    _rain = Rain(h: weather.humidity);
+    _wind = Wind(speed: weather.windSpeed, deg: weather.windDeg);
+  }
+
+  Weather toWeather() {
+    return Weather(
+      temperature: _main?.temp as double,
+      maxTemperature: _main?.tempMax as double,
+      minTemperature: _main?.tempMin as double,
+      feelsLike: _main?.feelsLike as double,
+      humidity: _main?.humidity as double,
+      windSpeed: _wind?.speed as double,
+      windDeg: _wind?.deg as double,
+      rainVolumeForLast1Hour: _rain?.h as double,
+      weatherName: _weather?.first.main ?? '',
+      weatherDescription: _weather?.first.description ?? '',
+      icon: 'http://openweathermap.org/'
+              'img/wn/${_weather?.first.icon ?? '01d'}@2x.png',
+      clouds: _clouds?.all as double,
+    );
   }
 
   @override
@@ -183,11 +220,9 @@ class Wind {
   Wind({
     num? speed,
     num? deg,
-    num? gust,
   }) {
     _speed = speed;
     _deg = deg;
-    _gust = gust;
   }
 
   Wind.fromJson(dynamic json) {
@@ -208,7 +243,6 @@ class Wind {
       Wind(
         speed: speed ?? _speed,
         deg: deg ?? _deg,
-        gust: gust ?? _gust,
       );
 
   num? get speed => _speed;
@@ -221,7 +255,6 @@ class Wind {
     final map = <String, dynamic>{};
     map['speed'] = _speed;
     map['deg'] = _deg;
-    map['gust'] = _gust;
     return map;
   }
 
@@ -231,11 +264,10 @@ class Wind {
       other is Wind &&
           runtimeType == other.runtimeType &&
           _speed == other._speed &&
-          _deg == other._deg &&
-          _gust == other._gust;
+          _deg == other._deg;
 
   @override
-  int get hashCode => _speed.hashCode ^ _deg.hashCode ^ _gust.hashCode;
+  int get hashCode => _speed.hashCode ^ _deg.hashCode;
 }
 
 /// temp : 298.48
@@ -335,25 +367,21 @@ class Main {
 
 class WeatherInner {
   WeatherInner({
-    num? id,
     String? main,
     String? description,
     String? icon,
   }) {
-    _id = id;
     _main = main;
     _description = description;
     _icon = icon;
   }
 
   WeatherInner.fromJson(dynamic json) {
-    _id = json['id'];
     _main = json['main'];
     _description = json['description'];
     _icon = json['icon'];
   }
 
-  num? _id;
   String? _main;
   String? _description;
   String? _icon;
@@ -365,13 +393,10 @@ class WeatherInner {
     String? icon,
   }) =>
       WeatherInner(
-        id: id ?? _id,
         main: main ?? _main,
         description: description ?? _description,
         icon: icon ?? _icon,
       );
-
-  num? get id => _id;
 
   String? get main => _main;
 
@@ -381,7 +406,6 @@ class WeatherInner {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = _id;
     map['main'] = _main;
     map['description'] = _description;
     map['icon'] = _icon;
@@ -393,12 +417,10 @@ class WeatherInner {
       identical(this, other) ||
       other is WeatherInner &&
           runtimeType == other.runtimeType &&
-          _id == other._id &&
           _main == other._main &&
           _description == other._description &&
           _icon == other._icon;
 
   @override
-  int get hashCode =>
-      _id.hashCode ^ _main.hashCode ^ _description.hashCode ^ _icon.hashCode;
+  int get hashCode => _main.hashCode ^ _description.hashCode ^ _icon.hashCode;
 }
