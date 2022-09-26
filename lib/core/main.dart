@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:open_weather_app/weather/presentation/screen/weather_screen.dart';
+import 'package:open_weather_app/core/navigation.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp(navigation: Navigation()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Navigation _navigation;
+  const MyApp({
+    Key? key, required Navigation navigation,
+  }) : _navigation = navigation, super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      routes: <String, WidgetBuilder>{
-        "/": (context) => const WeatherScreen(),
-      },
+      routes: _navigation.routes,
+      onGenerateRoute: _navigation.onGenerateRoute,
     );
   }
 }
