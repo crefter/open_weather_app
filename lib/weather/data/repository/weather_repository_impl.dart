@@ -27,7 +27,8 @@ class WeatherRepositoryImpl implements WeatherRepository {
   }
 
   @override
-  Future<void> saveWeather(Weather weather) async {
-    localWeatherDataSource.saveWeather(WeatherModel.fromWeather(weather));
+  Future<bool> saveWeather(Weather weather) async {
+    return localWeatherDataSource
+        .saveWeather(WeatherModel.fromWeather(weather));
   }
 }
