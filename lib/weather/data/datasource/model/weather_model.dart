@@ -89,6 +89,7 @@ class WeatherModel {
   }
 
   WeatherModel.fromWeather(Weather weather) {
+    _weather = [];
     _weather?.add(
       WeatherInner(
           main: weather.weatherName,
@@ -107,19 +108,19 @@ class WeatherModel {
 
   Weather toWeather() {
     return Weather(
-      temperature: _main?.temp as double,
-      maxTemperature: _main?.tempMax as double,
-      minTemperature: _main?.tempMin as double,
-      feelsLike: _main?.feelsLike as double,
-      humidity: _main?.humidity as double,
-      windSpeed: _wind?.speed as double,
-      windDeg: _wind?.deg as double,
-      rainVolumeForLast1Hour: _rain?.h as double,
+      temperature: _main?.temp?.toDouble() ?? 0.0,
+      maxTemperature: _main?.tempMax?.toDouble() ?? 0.0,
+      minTemperature: _main?.tempMin?.toDouble() ?? 0.0,
+      feelsLike: _main?.feelsLike?.toDouble() ?? 0.0,
+      humidity: _main?.humidity?.toDouble() ?? 0.0,
+      windSpeed: _wind?.speed?.toDouble() ?? 0.0,
+      windDeg: _wind?.deg?.toDouble() ?? 0.0,
+      rainVolumeForLast1Hour: _rain?.h?.toDouble() ?? 0.0,
       weatherName: _weather?.first.main ?? '',
       weatherDescription: _weather?.first.description ?? '',
       icon: 'http://openweathermap.org/'
           'img/wn/${_weather?.first.icon ?? '01d'}@2x.png',
-      clouds: _clouds?.all as double,
+      clouds: _clouds?.all?.toDouble() ?? 0.0,
     );
   }
 
