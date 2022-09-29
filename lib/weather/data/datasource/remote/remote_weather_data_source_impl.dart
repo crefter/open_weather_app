@@ -11,14 +11,18 @@ class RemoteWeatherDataSourceImpl implements RemoteWeatherDataSource {
   Dio dio;
 
   RemoteWeatherDataSourceImpl({required this.dio}) {
-   dio.options.baseUrl = _baseUrl;
-   dio.options.responseType = ResponseType.json;
+    dio.options.baseUrl = _baseUrl;
+    dio.options.responseType = ResponseType.json;
   }
 
   @override
   Future<WeatherModel> getWeather(String city) async {
     try {
-      dio.options.queryParameters = {'appid' : _apiKey, 'q' : city};
+      dio.options.queryParameters = {
+        'appid': _apiKey,
+        'q': city,
+        'units': 'metric',
+      };
       final response = await dio.get<String>('/weather');
       if (response.data != null) {
         final map = jsonDecode(response.data!);
