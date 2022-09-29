@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:open_weather_app/core/error/weather_response_exception.dart';
@@ -20,10 +21,14 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       await event.when(
         load: (city) => _onLoad(event, emit),
       );
-    });
+    }, transformer: restartable());
   }
 
   Future<void> _onLoad(WeatherEvent event, Emitter<WeatherState> emit) async {
+    if (event.city.length < 2) {
+      return;
+    }
+    await Future.delayed(const Duration(milliseconds: 500));
     emit(WeatherState.loading(
       state.maybeWhen(
         loaded: (weatherDto) => weatherDto,
